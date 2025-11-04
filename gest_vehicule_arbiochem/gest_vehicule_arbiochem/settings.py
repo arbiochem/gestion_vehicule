@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'gestion_vehicule',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,12 +72,17 @@ WSGI_APPLICATION = 'gest_vehicule_arbiochem.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mssql',
+        'NAME': 'gestion_vehicule',
+        'USER': 'Dev',
+        'PASSWORD': '1234',
+        'HOST': 'SRV-ARB',
+        'PORT': '1433', 
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server', 
+        },
     }
 }
 
@@ -117,7 +123,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'gestion_vehicule.CustomUser'
