@@ -33,5 +33,5 @@ if __name__ == '__main__':
     port = "8000"
     print(f"Lancement de Django sur http://{local_ip}:{port}/")
     import sys
-    sys.argv += [f"{local_ip}:{port}"]  # Ajoute l'adresse IP et le port aux arguments
+    sys.argv += [f"{local_ip}:{port}"] 
     main()

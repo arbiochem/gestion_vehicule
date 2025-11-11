@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,47 +11,770 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
-            background: #f0f4f8;
-            margin: 0;
+            background: #fff;
+            min-height: 100vh;
             padding: 0;
         }
 
+        /* Navbar */
         .navbar {
-            background-color: #2196F3;
-            padding: 0 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 30px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            height: 60px;
-            color: #fff;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .navbar h4 {
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            height: 60px;
+            width: auto;
+            border-radius: 8px;
+            object-fit: contain;
+            box-shadow: 0 4px 8px #1AAAC2;
+            transition: transform 0.2s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .t_title {
+            position:relative;
+            left:19rem;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin: 0;
-            font-weight: 400;
+            text-shadow: 0 3px 8px #1AAAC2;
         }
 
         .logout-btn {
-            color: #fff;
+            color: #667eea;
             display: flex;
             align-items: center;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 300;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #667eea;
+            color: white;
         }
 
         .logout-btn i {
-            margin-left: 5px;
+            margin-left: 8px;
         }
 
+        /* Container */
         .container {
-            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
         }
 
-        .card {
-            padding: 20px;
-            border-radius: 10px;
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px #1AAAC2;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .add {
+            position:relative;
+            top:1rem;
+            border-radius: 16px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .add_chauffeur{
+            position:relative;
+            top:0.3rem;
+            border-radius: 16px;
+            padding: 0.1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .card-icon i {
+            font-size: 32px;
+            color: white;
+        }
+
+        .card-title h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 5px 0;
+        }
+
+        .card-title p {
+            font-size: 13px;
+            color: #999;
+            margin: 0;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 26px;
+            font-weight: 700;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Couleurs */
+        .voiture { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .moto { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .livraison { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+
+       
+        .action-btn {
+            background: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #667eea;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+            background: #667eea;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-btn i {
+            font-size: 20px;
+        }
+
+        .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1AAAC2;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn .material-icons {
+            font-size: 22px;
+            transition: transform 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .logout-btn:hover .material-icons {
+            transform: rotate(180deg);
+        }
+
+        .logout-btn .username {
+            text-shadow:
+                0 0 4px rgba(255, 255, 255, 0.6),
+                0 0 10px rgba(118, 75, 162, 0.8);
+        }
+
+        @media (max-width: 768px) {
+            .logout-btn {
+                width: 100%;
+                justify-content: center;
+                font-size: 0.9rem;
+                padding: 12px;
+            }
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .t_title {
+                font-size: 1.3rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .navbar-left {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .t_title {
+                font-size: 1.2rem;
+            }
+
+            .logo {
+                height: 40px;
+            }
+
+            .logout-btn {
+                margin-top: 10px;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .card-icon {
+                width: 50px;
+                height: 50px;
+            }
+
+            .card-icon i {
+                font-size: 26px;
+            }
+
+            .card-title h3 {
+                font-size: 16px;
+            }
+
+            .stat-number {
+                font-size: 22px;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .action-btn {
+                padding: 12px 16px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .t_title {
+                font-size: 1rem;
+                letter-spacing: 0.5px;
+            }
+
+            .logo {
+                height: 35px;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .card-header {
+                gap: 12px;
+            }
+
+            .card-icon {
+                width: 45px;
+                height: 45px;
+            }
+
+            .card-icon i {
+                font-size: 22px;
+            }
+
+            .card-title h3 {
+                font-size: 15px;
+            }
+
+            .card-title p {
+                font-size: 12px;
+            }
+
+            .card-stats {
+                gap: 10px;
+            }
+
+            .stat-number {
+                font-size: 20px;
+            }
+
+            .stat-label {
+                font-size: 10px;
+            }
+
+            .action-btn {
+                padding: 10px 14px;
+                font-size: 12px;
+            }
+
+            .action-btn i {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .t_title {
+                font-size: 0.9rem;
+            }
+
+            .card-title h3 {
+                font-size: 14px;
+            }
+
+            .stat-number {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-left {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .navbar-left .logo {
+                height: 70px;
+                margin-bottom: 10px;
+            }
+
+            .t_title {
+                position:absolute;
+                left:2.9rem;
+                top:6.7rem;
+                font-size: 1.4rem;
+                letter-spacing: 0.5px;
+            }
+
+            .page-title {
+                color: white;
+                font-size: 2rem;
+                font-weight: 500;
+                margin-bottom: 30px;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .table-card {
+                background: white;
+                border-radius: 16px;
+                padding: 0;
+                box-shadow: 
+                    0 4px 6px rgba(0, 0, 0, 0.07),
+                    0 10px 15px rgba(0, 0, 0, 0.1),
+                    0 0 20px rgba(102, 126, 234, 0.15);
+                overflow: hidden;
+            }
+
+            .table-header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 20px 24px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .table-header h2 {
+                font-size: 1.5rem;
+                font-weight: 500;
+                margin: 0;
+            }
+
+            .search-box {
+                position: relative;
+                max-width: 300px;
+                width: 100%;
+            }
+
+            .search-box input {
+                width: 100%;
+                padding: 10px 40px 10px 15px;
+                border: none;
+                border-radius: 25px;
+                font-size: 14px;
+                background: rgba(255, 255, 255, 0.2);
+                color: white;
+                transition: all 0.3s ease;
+            }
+
+            .search-box input::placeholder {
+                color: rgba(255, 255, 255, 0.7);
+            }
+
+            .search-box input:focus {
+                outline: none;
+                background: rgba(255, 255, 255, 0.3);
+            }
+
+            .search-box i {
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: white;
+            }
+
+        /* Table normale */
+        .responsive-table-wrapper {
+            overflow-x: auto;
+            padding: 24px;
+        }
+
+        .material-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .material-table thead {
+            background: #f5f7fa;
+        }
+
+        .material-table thead th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #667eea;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .material-table tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .material-table tbody tr:hover {
+            background: #f9fafb;
+            transform: scale(1.01);
+        }
+
+        .material-table tbody td {
+            padding: 15px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        /* Badges de statut */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .status-actif {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-maintenance {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-repos {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        /* Boutons d'action */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .btn-view:hover {
+            background: #1976d2;
+            color: white;
+        }
+
+        .btn-edit {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .btn-edit:hover {
+            background: #f57c00;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .btn-delete:hover {
+            background: #c62828;
+            color: white;
+        }
+
+        /* Pagination */
+        .table-footer {
+            padding: 20px 24px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .pagination button {
+            width: 35px;
+            height: 35px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .pagination button:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .pagination button.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .responsive-table-wrapper {
+                padding: 20px;
+            }
+
+            .material-table thead th,
+            .material-table tbody td {
+                padding: 12px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            /* Mode carte pour mobile */
+            .material-table thead {
+                display: none;
+            }
+
+            .material-table tbody tr {
+                display: block;
+                margin-bottom: 15px;
+                border: 1px solid #e0e0e0;
+                border-radius: 12px;
+                padding: 15px;
+                background: white;
+            }
+
+            .material-table tbody tr:hover {
+                transform: none;
+            }
+
+            .material-table tbody td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 0;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .material-table tbody td:last-child {
+                border-bottom: none;
+            }
+
+            .material-table tbody td:before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #667eea;
+                text-transform: uppercase;
+                font-size: 12px;
+                letter-spacing: 0.5px;
+            }
+
+            .table-footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            .page-title {
+                font-size: 1.3rem;
+            }
+
+            .table-card {
+                border-radius: 12px;
+            }
+
+            .table-header {
+                padding: 15px;
+            }
+
+            .table-header h2 {
+                font-size: 1.2rem;
+            }
+
+            .responsive-table-wrapper {
+                padding: 15px;
+            }
+
+            .action-buttons {
+                justify-content: flex-end;
+            }
+        }
         }
     </style>
 </head>
@@ -58,39 +782,273 @@
 
     <!-- Navbar -->
     <div class="navbar">
-        <div>
-            <h4>Dashboard</h4>
+        <div class="navbar-left">
+            <img src="{% static 'gestion_vehicule/logo.jpeg' %}" alt="Logo Société" class="logo">
+            <h2 class="t_title">Gestion de Véhicules/Moto</h2>
         </div>
         <a href="{% url 'logout' %}" class="logout-btn">
-            Vous êtes connecté en tant que : {{ request.user.username }} <i class="material-icons">logout</i>
+            <span class="username">{{ request.user.username }}</span>
+            <i class="material-icons">logout</i>
         </a>
+
     </div>
 
     <div class="container">
-        <div class="card">
-            <h5>Liste des utilisateurs</h5>
-            <table class="striped">
+        <!-- Cards Grid -->
+        <div class="cards-grid">
+            <!-- Véhicules Légers -->
+            <div class="stat-card">
+                <div class="card-header">
+                    <div class="card-icon voiture">
+                        <i class="material-icons">directions_car</i>
+                    </div>
+                    <div class="card-title">
+                        <h3>Véhicules Légers (VL)</h3>
+                        <p>Flotte principale</p>
+                    </div>
+                </div>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">247</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">220</span>
+                        <span class="stat-label">En service</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">27</span>
+                        <span class="stat-label">Maintenance</span>
+                    </div>
+                </div>
+                <a href="" class="add">
+                    <i class="material-icons">add_circle</i>
+                </a>
+            </div>
+
+            <!-- Poids Lourds -->
+            <div class="stat-card">
+                <div class="card-header">
+                    <div class="card-icon voiture">
+                        <i class="material-icons">local_shipping</i>
+                    </div>
+                    <div class="card-title">
+                        <h3>Poids Lourds</h3>
+                        <p>Transport lourd</p>
+                    </div>
+                </div>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">89</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">79</span>
+                        <span class="stat-label">En service</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">10</span>
+                        <span class="stat-label">Maintenance</span>
+                    </div>
+                </div>
+                <a href="" class="add">
+                    <i class="material-icons">add_circle</i>
+                </a>
+            </div>
+
+            <!-- Motos -->
+            <div class="stat-card">
+                <div class="card-header">
+                    <div class="card-icon livraison">
+                        <i class="material-icons">two_wheeler</i>
+                    </div>
+                    <div class="card-title">
+                        <h3>Motos</h3>
+                        <p>Flotte deux-roues</p>
+                    </div>
+                </div>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">56</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50</span>
+                        <span class="stat-label">En service</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">6</span>
+                        <span class="stat-label">Maintenance</span>
+                    </div>
+                </div>
+                <a href="" class="add">
+                    <i class="material-icons">add_circle</i>
+                </a>
+            </div>
+        </div>
+
+        <div class="responsive-table-wrapper">
+            <input type="text" id="searchInput" class="form-control mb-3" placeholder="Rechercher...">
+
+            <table style="border: 1px solid #1AAAC2; border-radius:8px; border-collapse: separate; border-spacing: 0;">
                 <thead>
                     <tr>
-                        <th>Nom d’utilisateur</th>
-                        <th>Email</th>
-                        <th>Date de création</th>
+                        <th>Immatriculation</th>
+                        <th>Carrosserie</th>
+                        <th>Chauffeur
+                            <a href="{% url 'chauffeurs:chauffeur' %}" target="_blank" rel="noopener noreferrer" class="add_chauffeur">
+                                <i class="material-icons me-2">list</i>
+                            </a>
+                        </th>
+                        <th>Type</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for u in users %}
-                        <tr>
-                            <td>{{ u.username }}</td>
-                            <td>{{ u.email }}</td>
-                            <td>{{ u.date_joined|date:"d/m/Y H:i" }}</td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="3">Aucun utilisateur trouvé</td>
-                        </tr>
-                    {% endfor %}
+                    <tr>
+                        <td data-label="Immatriculation">AB-123-CD</td>
+                        <td data-label="Marque">Renault</td>
+                        <td data-label="Modèle">Clio 5</td>
+                        <td data-label="Type">VL</td>
+                        <td data-label="Statut">
+                            <span class="status-badge status-actif">Actif</span>
+                        </td>
+
+                        <td data-label="Actions">
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Voir">
+                                    <i class="material-icons">visibility</i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Modifier">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Supprimer">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-label="Immatriculation">EF-456-GH</td>
+                        <td data-label="Marque">Peugeot</td>
+                        <td data-label="Modèle">3008</td>
+                        <td data-label="Type">VL</td>
+                        <td data-label="Statut">
+                            <span class="status-badge status-maintenance">Maintenance</span>
+                        </td>
+
+                        <td data-label="Actions">
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Voir">
+                                    <i class="material-icons">visibility</i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Modifier">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Supprimer">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-label="Immatriculation">IJ-789-KL</td>
+                        <td data-label="Marque">Citroën</td>
+                        <td data-label="Modèle">Berlingo</td>
+                        <td data-label="Type">VUL</td>
+                        <td data-label="Statut">
+                            <span class="status-badge status-actif">Actif</span>
+                        </td>
+
+                        <td data-label="Actions">
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Voir">
+                                    <i class="material-icons">visibility</i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Modifier">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Supprimer">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-label="Immatriculation">MN-012-OP</td>
+                        <td data-label="Marque">Mercedes</td>
+                        <td data-label="Modèle">Sprinter</td>
+                        <td data-label="Type">PL</td>
+                        <td data-label="Statut">
+                            <span class="status-badge status-repos">Repos</span>
+                        </td>
+
+                        <td data-label="Actions">
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Voir">
+                                    <i class="material-icons">visibility</i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Modifier">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Supprimer">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-label="Immatriculation">QR-345-ST</td>
+                        <td data-label="Marque">Toyota</td>
+                        <td data-label="Modèle">Hilux</td>
+                        <td data-label="Type">VL</td>
+                        <td data-label="Statut">
+                            <span class="status-badge status-actif">Actif</span>
+                        </td>
+
+                        <td data-label="Actions">
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Voir">
+                                    <i class="material-icons">visibility</i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Modifier">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Supprimer">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
+
+            <script>
+                const searchInput = document.getElementById('searchInput');
+                searchInput.addEventListener('input', function() {
+                    const filter = this.value.toLowerCase();
+                    const rows = document.querySelectorAll('.material-table tbody tr');
+                    rows.forEach(row => {
+                        const text = row.textContent.toLowerCase();
+                        row.style.display = text.includes(filter) ? '' : 'none';
+                    });
+                });
+            </script>
+        </div>
+
+        <!-- Pied du tableau -->
+        <div class="table-footer">
+            <div>Affichage de 1 à 5 sur 247 véhicules</div>
+            <div class="pagination">
+                <button><i class="material-icons">chevron_left</i></button>
+                <button class="active">1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>4</button>
+                <button>5</button>
+                <button><i class="material-icons">chevron_right</i></button>
+            </div>
         </div>
     </div>
 

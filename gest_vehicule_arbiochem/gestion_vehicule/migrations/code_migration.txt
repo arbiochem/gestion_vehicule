@@ -1,0 +1,4 @@
+python manage.py startapp chauffeur
+python manage.py makemigrations
+python manage.py migrate
+python manage.py makemigrations chauffeur
